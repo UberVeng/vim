@@ -1,0 +1,18 @@
+snippet t "Add any html tag" !b
+<${1:div} class="$2">
+	$3
+</${1/(\w+).*/$1/}>
+$0
+endsnippet
+snippet to "And any html tag in one line" !b
+<${1:div} class="$2">$3</${1/(\w+).*/$1/}>
+endsnippet
+
+snippet todo "This is a TODO reminder" b
+<!-- TODO: `echo $USER` ${1:desc} `!v strftime("%c")` -->
+endsnippet
+
+snippet test "test"
+<${1:div} id="${2}">
+</${1/(\w+).*/$1/}>
+endsnippet

@@ -1,0 +1,28 @@
+snippet t "Add any html tag" !b
+<${1:div}${2: className="$3"}>
+	$4
+</${1/(\w+).*/$1/}>$0
+endsnippet
+snippet to "And any html tag in one line" !b
+<${1:div}${2: className="$3"}>$4</${1/(\w+).*/$1/}>$0
+endsnippet
+
+snippet tt "Add autoclosing html tag"
+<${1:div}$2/>$0
+endsnippet
+
+snippet log "console.log()"
+console.log($1);
+endsnippet
+
+snippet rsc "Creates a stateless React component" b
+import React from 'react';
+
+const ${1:Name} = () => {
+  return (
+    ${VISUAL}$2
+  );
+};
+
+export default $1
+endsnippet
