@@ -1,0 +1,13 @@
+#!/bin/bash
+git clone https://github.com/jfsicilia/bclose.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/tpope/vim-fugitive.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/preservim/nerdtree.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/SirVer/ultisnips/.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/vim-airline/vim-airline.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/vim-airline/vim-airline-themes.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/evansalter/vim-checklist.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/tpope/vim-commentary.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/pangloss/vim-javascript.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/sheerun/vim-polyglot.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/garbas/vim-snipmate.git ~/.vim/pack/plugins/start/ &
+git clone https://github.com/tpope/vim-surround.git ~/.vim/pack/plugins/start/
