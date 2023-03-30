@@ -1,0 +1,252 @@
+snippet < "Add php tag"
+<?php $1 ?>$0
+endsnippet
+
+snippet ip "Ip check"
+if ($_SERVER['REMOTE_ADDR'] == '90.189.216.196') {
+  $1
+}
+endsnippet
+
+snippet ipp "Check both ip's"
+if ($_SERVER['REMOTE_ADDR'] == '90.189.216.196' || $_SERVER['REMOTE_ADDR'] == '78.40.83.122') {
+  $1
+}
+endsnippet
+
+snippet ipi "Check for ip and cookie variable 'dev'"
+if ($_SERVER['REMOTE_ADDR'] == '90.189.216.196' && $_COOKIE['${1:dev}'] == 1) {
+  $2
+}
+endsnippet
+
+snippet ipc "Check for cookie variable 'dev'"
+if ($_COOKIE['${1:dev}'] == 1) {
+  $2
+}
+endsnippet
+
+snippet t "Add any html tag" !b
+<${1:div}${2: id="$3"}${4: class="$5"}>
+  $6
+</${1/(\w+).*/$1/}>$0
+endsnippet
+
+snippet to "And any html tag in one line" 
+<${1:div}${2: id="$3"}${4: class="$5"}>$6</${1/(\w+).*/$1/}>$0
+endsnippet
+
+snippet tt "Add autoclosing html tag" !b
+<${1:div}$2/>$0
+endsnippet
+
+snippet input "Add input tag" !b
+<input type="${1:text}" placeholder="$2"/>$0
+endsnippet
+
+snippet dump "Add var_dump surrounded with <pre>" !b
+echo("<code>\\\$$1</code> dumped from: <code>`!v GetFileName()`:`!v line(".")`</code>");
+echo("<pre>");
+var_dump(\$${1:val});
+echo("</pre>");
+endsnippet
+
+snippet switch ""
+switch ($1) {
+  $2
+}
+endsnippet
+
+snippet case ""
+case $1:
+  ${2:echo "$3"};
+  break;
+endsnippet
+
+snippet func "Add function"
+function ${1:funcName}($2) {
+  ${VISUAL:text}$0
+}
+endsnippet
+
+snippet foreach "Foreach statement"
+foreach(\$${1:array} as \$${2:key} => \$${3:value}) {
+  $4
+}
+endsnippet
+
+snippet for"Foreach statement"
+for(${1:i} = 0; $1 ${2:<} ${3:10}; $1++) {
+  $4
+}
+endsnippet
+
+snippet if "If statement"
+if (${1:true}) {
+  $2
+}
+endsnippet
+
+snippet try "try/catch statement"
+try {
+  $1
+} catch (Exception $e) {
+  ${2:echo($e);}
+}
+endsnippet
+
+snippet backtrace "pretty output of debug_backtrace"
+$tmp = debug_backtrace();
+echo("<pre>");
+foreach($tmp as $key => $value) {
+  echo("[" . $key . "] =>\n");
+  foreach($value as $ke => $val) {
+    if ($ke == "file" || $ke == "line" || $ke == "function") {
+      echo("  [" . $ke . "] => " . $val . "\n");
+    }
+  }
+}
+echo("</pre>");
+endsnippet
+
+snippet cdump "cute dump"
+<?php
+// Кастомный вывод массивов и объектов. Не такой громоздкий как print_r, разборчивее чем var_dump.
+// Копирование последовательности ключей массивов на клик, перемещение между фигурными скобками,
+// сворачивание массивов и объектов при клике на тип
+// TODO отображение объектов как в var_dump
+// TODO поиск файла и строки с последним переопределением выбранного элемента
+// TODO возможность сравнивать 2 и более массивов/объектов (diff)
+?>
+<style> #dump, #dump span, #dump a, #dump div {font-family: Ubuntu; font-weight: 300;} #dump { line-height: 1.4; font-size: 1rem; background: #f4f3f3; margin: 0 10px 10px 0; } span.key:hover { background: #ffa8a8; cursor: pointer; } span.val:hover { background: #b1cbff; cursor: pointer; } #dump a { padding-left: 5px; padding-right: 5px } #dump a:target, #dump a:hover, .hi { cursor: pointer;  background: #496eff; color: white; } .key, .val, .braket { display: inline-block !important; padding: 3px; } #dump .type { color: #acacac; padding: 3px; } .type:hover { cursor: pointer; } .typeActive:hover { background: white; } </style>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', function () {
+  var brakets = document.getElementsByClassName("braket");
+  var arBlocks = document.getElementsByClassName("type");
+  for (var i = 0; i < brakets.length; i++) {
+    brakets[i].addEventListener('click', function() {
+      for (var i = 0; i < brakets.length; i++) {
+        brakets[i].classList.remove("hi");
+      }
+      var hash = this.getAttribute("mirror-braket");
+      document.getElementById(hash).scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });
+      this.setAttribute("class", "braket hi");
+      document.getElementById(hash).setAttribute("class", "braket hi");
+    });
+  }
+  for (var i = 0; i < arBlocks.length; i++) {
+    arBlocks[i].addEventListener('click', function() {
+      if(this.nextElementSibling != null)
+        this.nextElementSibling.style.display == "" || this.nextElementSibling.style.display == "block" ?
+        this.nextElementSibling.style.display = "none" : this.nextElementSibling.style.display = "block";
+    });
+  }
+}, false);
+function copy(text) {
+  text = text.replace(/\[/g,"[\"");
+  text = text.replace(/\]/g,"\"]");
+  /* Копировать в clipboard. Не работает без https */
+  try { navigator.clipboard.writeText(text); }
+  catch(e) { alert(text); }
+};
+</script>
+<?
+function startDump($ar, $maxLvl, $tabSize, $tooltip = "", $closBydef = false, $lvl = 0) {
+  $ar = (array)$ar;
+  foreach($ar as $key => $val) {
+    $collapsed = $closBydef ? ' display: none;' : '';
+    $idOpen = md5(uniqid());
+    $idClose = md5(uniqid());
+    $tooltip = $tooltip == "" ? "[" . $key . "]" : $tooltip . "[" . $key . "]";
+    echo("<span onclick=\"copy('" . $tooltip . "')\" title=\"" . $tooltip . "\" class=\"key\">[" . $key . "]</span>");
+    if(gettype($val) === "array" || gettype($val) === "object") {
+      echo(" => <a id=\"$idOpen\" mirror-braket=\"$idClose\" class=\"braket\">{</a> <span class=\"type typeActive\">(" .
+      gettype($val) . ")</span> <div style=\"margin-left:" . $tabSize . "px;" . $collapsed . "\">");
+      $lvl++;
+      if($lvl <= $maxLvl) startDump($val, $maxLvl, $tabSize, $tooltip, $closBydef, $lvl);
+      $lvl--;
+      echo("</div><a id=\"$idClose\" mirror-braket=\"$idOpen\" class=\"braket\">}</a><br>");
+    } else {
+      $val = htmlentities($val);
+      echo(" => <span onclick=\"copy('" . $val . "')\" class=\"val\">\"" . $val . "\"</span><br>");
+    }
+    $tooltip = preg_replace("/\[((?!\[)[\s\S])*\]$/", "", $tooltip);
+  }
+};
+function cute_dump($ar, $maxLvl = 10, $tabSize = 20, $closBydef = false) {
+  /* Получаем имя передаваемого масива $ar */
+  $bt = debug_backtrace();
+  extract(array_shift($bt));
+  $lines = file($file);
+  $code = implode('', array_slice($lines, $line - 1));
+  preg_match('/dump\s*\(\s*(.*?)\s*\)/i', $code, $matches);
+  $arName = preg_replace("@'|\"@", "", explode(",", $matches[1])[0]);
+  /*  */
+  echo("<div id=\"dump\">");
+  if(gettype($ar) === "array" || gettype($ar) === "object") {
+    echo !empty($ar) ? startDump($ar, $maxLvl, $tabSize, $arName, $closBydef) : "NULL";
+  } else {
+    echo("<span class=\"key\">$arName</span> = <span onclick=\"copy('" . $ar . "')\" class=\"val\">" . 
+    $ar . "</span><span class=\"type\">(" . gettype($ar) . ")</span>");
+  }
+  echo("</div>");
+};
+?>
+endsnippet
+
+snippet vt "varable trace /// добавить проверку - если совпадение внутри функции"
+$searchRegex = '${1:regex}';
+$incFiles = array_reverse(get_included_files());
+$allIncludedFiles = "";
+foreach($incFiles as $value) {
+  $allIncludedFiles .= $value . " ";
+}
+$allIncludedFiles .= "";
+exec("grep -in \"$searchRegex\" $allIncludedFiles", $out);
+echo("<pre>");
+foreach($out as $key => $value) {
+  echo(htmlentities($value) . "\n");
+}
+echo("</pre>");
+endsnippet
+
+snippet dt "define test file and constant"
+define("INTELSIB_TEST", 1);
+include_once($_SERVER['DOCUMENT_ROOT'] . "/test.php");$0
+endsnippet
+
+snippet it "If test"
+if (INTELSIB_TEST === 1) {
+  $1
+}
+endsnippet
+
+snippet cd "cute_dump"
+echo("<p style=\"background: hsl(0, 0%, 92%);\"><i style=\"color:hsl(200, 100%, 50%);\">\\\$$1</i> dumped from: <i style=\"color:hsl(10, 80%, 60%);\">`!v GetFileName()`:`!v line(".")`</i>$3</p>");
+cute_dump($${1:val}, 10, 20, ${2:true});$0
+endsnippet
+
+snippet tn "ticket number"
+/*  #${1:12345}#
+ *  
+ */
+$2
+#### $1 ####
+endsnippet
+
+
+
+
+
+
+snippet user "demo" bm
+group { "${1:username}":
+    ensure => ${2:present},
+    uid => ${3:123},
+    gid => ${4:123},
+    ${5/(".*)|.*/(?1:comment => )/}${5:"some comment"}${5/(".*)|.*/(?1:,)/}
+    home => ${6:"/home/$1"},
+    managehome => ${7:false},
+    require => ${8/./\u$0/}["${8:group}"],
+}
+endsnippet

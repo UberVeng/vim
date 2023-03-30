@@ -1,0 +1,13 @@
+snippet t "Add any html tag" !b
+<${1:div}${2: id="$3"}${4: class="$5"}>
+	$6
+</${1/(\w+).*/$1/}>$0
+endsnippet
+
+snippet to "And any html tag in one line" 
+<${1:div}${2: id="$3"}${4: class="$5"}>$6</${1/(\w+).*/$1/}>$0
+endsnippet
+
+snippet tt "Add autoclosing html tag" !b
+<${1:div}$2/>$0
+endsnippet

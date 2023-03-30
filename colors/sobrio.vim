@@ -22,7 +22,7 @@ let s:darkest = '#000000'
 let s:fold = '#262626'
 let s:hover = '#5f5f5f'
 let s:lightest = '#ffffff'
-let s:lineNumber = '#333333'
+let s:lineNumber = '#505050'
 let s:menu = '#303030'
 let s:splits = '#303030'
 let s:visual = '#4e4e4e'
@@ -130,7 +130,7 @@ call s:create('Visual' , 'NONE', 239, 'NONE', s:visual, 'NONE')
 call s:create('WarningMsg', 231, 204, 'NONE', s:warn, s:lightest)
 call s:create('TabLineFill', 231, 204, 'NONE', s:menu, s:other)
 call s:create('TabLine', 231, 204, 'NONE', s:menu, s:other)
-call s:create('TabLineSel', 231, 204, s:b, s:bg, s:arg)
+call s:create('TabLineSel', 231, 204, s:b, s:muted, s:accent)
 
 "  Netrw File Browser
 call s:create('netrwClassify', 231, 204, 'NONE', 'NONE', s:lineNumber)
@@ -152,7 +152,7 @@ call s:link('NERDTreeFile', 'netrwPlain')
 call s:create('DiffAdd', 231, 155, s:b, 'NONE', s:exec)
 call s:create('DiffChange', 'NONE', 'NONE', 'NONE', 'NONE', s:str2)
 call s:create('DiffDelete', 204, 'NONE', 'NONE', 'NONE', s:warn)
-call s:create('DiffText', 231, 24, s:b, s:id, s:lightest)
+call s:create('DiffText', 231, 24, s:b, s:id, s:hover)
 
 " HTML 
 call s:create('htmlArg', 'NONE', 'NONE', s:i, 'NONE', s:arg)
@@ -385,3 +385,15 @@ call s:link('vimUserFunc', 'vimIsCommand')
 " Help
 call s:create('helpExample', 81, 'NONE', s:i, 'NONE', s:arg)
 call s:link('helpCommand', 'Keyword')
+
+" Term colors bright
+let g:terminal_ansi_colors =  [s:bg,    s:warn]
+let g:terminal_ansi_colors += [s:exec,   s:str2]
+let g:terminal_ansi_colors += [s:dir,  s:int]
+let g:terminal_ansi_colors += [s:exec,   s:id]
+
+" Term colors normal
+let g:terminal_ansi_colors += [s:menu,   s:word]
+let g:terminal_ansi_colors += [s:exec,   s:str2]
+let g:terminal_ansi_colors += [s:dir,  s:int]
+let g:terminal_ansi_colors += [s:exec,   s:var]

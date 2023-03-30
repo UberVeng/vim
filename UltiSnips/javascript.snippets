@@ -16,7 +16,7 @@ snippet input "Add input tag" !b
 endsnippet
 
 snippet log "console.log()"
-console.log('${VISUAL}$1:', $1);
+console.log('${VISUAL}$1: ', $1);
 endsnippet
 
 snippet try "Try/catch statement"
@@ -31,4 +31,24 @@ snippet usta "UseState constant"
 const [${1:value}, set$1] = useState([
 	{${2:id}: ${3:val}, ${4:key}: ${5:val}, ${6:key}: ${7:val}},
 ])
+endsnippet
+
+snippet switch "UseState constant"	
+switch ($1) {
+	case $2:
+		$3
+	break;
+	case $4:
+		$5
+	break;
+	case $6:
+		$7
+	break;
+}
+endsnippet
+
+snippet func "Add function"	
+function $1($2) {
+  $3
+}
 endsnippet

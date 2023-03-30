@@ -1,0 +1,21 @@
+snippet try "Try catch method"
+try {
+  $1
+} catch (${2:exception}) {
+  $3
+} ${4:finally {
+  $5
+}}
+endsnippet
+
+snippet sf ""
+fmt.Scanf("${1:%s}", ${2:a})
+endsnippet
+
+snippet pf ""
+fmt.Printf("${1:%s}", ${2:a})
+endsnippet
+
+snippet pl ""
+fmt.Println($1)
+endsnippet
